@@ -1,20 +1,22 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react"; // Import the React plugin
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [ react() ],
+  plugins: [react()], // Add the React plugin
   server: {
-    headers: {
-      "Cross-Origin-Embedder-Policy": "require-corp",
-      "Cross-Origin-Opener-Policy": "same-origin"
-    },
+    port: 5173,
     proxy: {
-      '/cdn': {
-        target: 'https://unpkg.com',
+      "/api/v1": {
+        target: "http://localhost:3000", // API server
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/cdn/, '')
-      }
-    }
-  }
-})
+        secure: false,
+      },
+      // "/socket.io": {
+      //   target: "http://localhost:9000", // WebSocket server
+      //   ws: true, // WebSocket connection
+      //   changeOrigin: true,
+      //   secure: false,
+      // },
+    },
+  },
+});

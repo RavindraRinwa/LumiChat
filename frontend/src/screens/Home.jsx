@@ -14,7 +14,7 @@ const Home = () => {
     console.log({ projectName });
 
     axios
-      .post("/projects/create", {
+      .post("/api/v1/projects/create", {
         name: projectName,
       })
       .then((res) => {
@@ -26,16 +26,16 @@ const Home = () => {
       });
   }
 
-  useEffect(() => {
-    axios
-      .get("/projects/all")
-      .then((res) => {
-        setProject(res.data.projects);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("/projects/all")
+  //     .then((res) => {
+  //       setProject(res.data.projects);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   return (
     <main className="p-4">

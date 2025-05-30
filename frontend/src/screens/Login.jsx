@@ -13,12 +13,16 @@ const Login = () => {
 
   function submitHandler(e) {
     e.preventDefault();
-
+    console.log(email, password);
     axios
-      .post("api/v1/users/login", {
-        email,
-        password,
-      })
+      .post(
+        "/api/v1/users/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      )
       .then((res) => {
         console.log(res.data);
 
@@ -28,7 +32,7 @@ const Login = () => {
         navigate("/");
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.message);
       });
   }
 
