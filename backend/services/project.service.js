@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import projectModel from "../models/project.model.js";
 
 export const createProject = async (name, userId) => {
@@ -10,5 +11,49 @@ export const createProject = async (name, userId) => {
     return project;
   } catch (error) {
     throw new Error("Error creating project");
+  }
+};
+
+export const getAllProjectsByUserId = async (userId) => {
+  if (!userId) {
+    throw new Error("User ID is required");
+  }
+  try {
+    const projects = await projectModel.find({ users: userId });
+    return projects;
+  } catch (error) {
+    throw new Error("Error fetching projects");
+  }
+};
+
+export const addUserToProject = async (projectId, users, userId) => {
+  if (!projectId || !users || !Array.isArray(users)) {
+    throw new Error("Project ID and users array are required");
+  }
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    throw new Error("Invalid project ID");
+  }
+  if (!userId) {
+    throw new Error("User ID is required");
+  }
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new Error("Invalid user ID");
+  }
+  try {
+    const project = await projectModel.findOne({
+      _id: projectId,
+      users: userId,
+    });
+    if (!project) {
+      throw new Error("Project not found");
+    }
+    const updatedProject = await projectModel.findByIdAndUpdate(
+      projectId,
+      { $addToSet: { users: { $each: users } } },
+      { new: true }
+    );
+    return updatedProject;
+  } catch (error) {
+    throw new Error("Error adding user to project");
   }
 };
