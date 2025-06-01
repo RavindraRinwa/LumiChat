@@ -26,16 +26,16 @@ const Home = () => {
       });
   }
 
-  // useEffect(() => {
-  //   axios
-  //     .get("/projects/all")
-  //     .then((res) => {
-  //       setProject(res.data.projects);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get("/api/v1/projects/all")
+      .then((res) => {
+        setProject(res.data.projects);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <main className="p-4">

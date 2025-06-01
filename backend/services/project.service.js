@@ -57,3 +57,29 @@ export const addUserToProject = async (projectId, users, userId) => {
     throw new Error("Error adding user to project");
   }
 };
+
+export const getProjectById = async (projectId, userId) => {
+  if (!projectId || !userId) {
+    throw new Error("Project ID and user ID are required");
+  }
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    throw new Error("Invalid project ID");
+  }
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new Error("Invalid user ID");
+  }
+  try {
+    const project = await projectModel
+      .findOne({
+        _id: projectId,
+        users: userId,
+      })
+      .populate("users", "email name");
+    if (!project) {
+      throw new Error("Project not found or you do not have access");
+    }
+    return project;
+  } catch (error) {
+    throw new Error("Error fetching project by ID");
+  }
+};

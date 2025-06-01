@@ -53,3 +53,19 @@ export const addUserToProject = async (req, res) => {
     return res.status(500).json({ message: "Error adding user to project" });
   }
 };
+
+export const getProjectById = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const loggedInUser = await userModel.findOne({ email: req.user.email });
+    const userId = loggedInUser._id;
+
+    const project = await projectService.getProjectById(projectId, userId);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+    return res.status(200).json({ project });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
