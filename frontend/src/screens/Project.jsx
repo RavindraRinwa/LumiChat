@@ -64,7 +64,7 @@ const Project = () => {
 
   function addCollaborators() {
     axios
-      .put("/projects/add-user", {
+      .put("/api/v1/projects/add-user", {
         projectId: location.state.project._id,
         users: Array.from(selectedUserId),
       })
@@ -133,7 +133,7 @@ const Project = () => {
     });
 
     axios
-      .get(`/projects/get-project/${location.state.project._id}`)
+      .get(`/api/v1/projects/get-project/${location.state.project._id}`)
       .then((res) => {
         console.log(res.data.project);
 
@@ -142,7 +142,7 @@ const Project = () => {
       });
 
     axios
-      .get("/users/all")
+      .get("/api/v1/users/all")
       .then((res) => {
         setUsers(res.data.users);
       })
@@ -153,7 +153,7 @@ const Project = () => {
 
   function saveFileTree(ft) {
     axios
-      .put("/projects/update-file-tree", {
+      .put("/api/v1/projects/update-file-tree", {
         projectId: project._id,
         fileTree: ft,
       })
